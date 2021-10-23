@@ -49,7 +49,21 @@ int main()
         }
         if (opcion == 3) //Eliminar
         {
-            cout<<"en construccion";
+            int aux;
+            do
+            {
+                cout<<"Elija una opcion:"<<endl<<
+                "1)borrar un numero"<<endl<<
+                "2)Dejar de borrar\n";
+                cin>>aux;
+                if(aux==1){
+                    int dato;
+                    cout<<"Ingrese el numero a eliminar:\n";
+                    cin>>dato;
+                    Mytree.Remove(dato);
+                    cout<<"El elemento fue eliminado\n";
+                }
+            }while(aux!=2);
         }
         if (opcion == 4) //Buscar
         {

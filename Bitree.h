@@ -1,4 +1,5 @@
 #include "Node.h"
+#include <stack>
 
 template <typename T>
 class Bitree;
@@ -20,7 +21,15 @@ class Bitree{
         void Post_Order();
         bool Search(T,Node<T>*);
         bool Search(T);
-        void Remove(T);
+        void guardarPila(Node<T>* p, std::stack<Node<T>*>& pila)
+        {
+            if (!p)
+            return;
+            pila.push(p);
+            guardarPila(p->son[0], pila);
+            guardarPila(p->son[1], pila);
+        }
+        bool Remove(T);
 };
 
 //defaut constructor
@@ -75,14 +84,30 @@ bool Bitree<T>::Search(T data)
 }
 ////////////////////////////////////////////////////Remove function
 
-template <typename T>
-void Bitree<T>::Remove(T data){
-    if(Search(data))
-    {
-        std::cout<<"en construccion";
-    }else{
-        std::cout<<"No se puede remover el elemento: "<<data<<" Porque no esta en el arbol\n";
+template<typename T>
+bool Bitree<T>::Remove(T data)
+{
+    if (Search(data)){
+        Node<T>* q = root;
+        while (q->datum != data)
+        q = q->son[q->datum < data];
+        std::stack<Node<T>*> pila;
+        Node<T>* q2 = q;
+        if (q == root) root = nullptr;
+        else
+        q->son[2]->son[q->son[2]->datum < data] = nullptr;
+        guardarPila(q2, pila);
+        //_size = _size - pila.size();
+        while (pila.size()){
+            Node<T>* aux = pila.top();
+            if (pila.size() != 1)
+                Insert(aux->datum);
+            pila.pop();
+            delete aux;
+        }
+        return true;
     }
+    return false;
 }
 ////////////////////////////////////////////////////Print pre order, in order and post order
 
